@@ -1,71 +1,54 @@
-// C++ Implementation of the Quick Sort Algorithm.
 #include <iostream>
 using namespace std;
 
-int partition(int arr[], int start, int end)
-{
-
-	int pivot = arr[start];
-
-	int count = 0;
-	for (int i = start + 1; i <= end; i++) {
-		if (arr[i] <= pivot)
-			count++;
-	}
-
-	// Giving pivot element its correct position
-	int pivotIndex = start + count;
-	swap(arr[pivotIndex], arr[start]);
-
-	// Sorting left and right parts of the pivot element
-	int i = start, j = end;
-
-	while (i < pivotIndex && j > pivotIndex) {
-
-		while (arr[i] <= pivot) {
-			i++;
-		}
-
-		while (arr[j] > pivot) {
-			j--;
-		}
-
-		if (i < pivotIndex && j > pivotIndex) {
-			swap(arr[i++], arr[j--]);
-		}
-	}
-
-	return pivotIndex;
+void print(int *a,int n) {
+    for(int i=0;i<n;i++) {
+        cout<<a[i]<<" ";
+    }
 }
 
-void quickSort(int arr[], int start, int end)
-{
+void swap(int *xp,int *yp) {
+    int temp=*xp;
+    *xp=*yp;
+    *yp=temp;
+}
 
-	// base case
-	if (start >= end)
-		return;
+int partition(int*a,int l,int r) {
+    int pivot=a[r];
+     int i=l-1;
+    for(int j=l;j<r;j++) {
+        if(a[j]<pivot) {
+            i++;
+            swap(&a[i],&a[j]);
+        }
+    }
+    swap(&a[i+1],&a[r]);
+    return (i+1);
+}
 
-	// partitioning the array
-	int p = partition(arr, start, end);
-
-	// Sorting the left part
-	quickSort(arr, start, p - 1);
-
-	// Sorting the right part
-	quickSort(arr, p + 1, end);
+void quick_sort(int *a,int l, int r) {
+    if(l<r) {
+        int p=partition(a,l,r);
+        quick_sort(a,l,p-1);
+        quick_sort(a,p+1,r);
+    }
 }
 
 int main()
 {
+    int size;
+    cout<<"Enter Size\n";
+    cin>>size;
+    
+    int *arr= new int[size];
+    
+    cout<<"Enter elements\n";
+    for(int i=0;i<size;i++) {
+        cin>>arr[i];
+    }
+    
+    quick_sort(arr,0,size-1);
+    print(arr,size);
 
-	int arr[] = { 9, 3, 4, 2, 1, 8 };
-	int n = 6;
-
-	quickSort(arr, 0, n - 1);
-
-	for (int i = 0; i < n; i++) {
-		cout << arr[i] << " ";
-	}
-
-	return 0;
+    return 0;
 }
